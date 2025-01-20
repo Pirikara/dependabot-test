@@ -1,0 +1,44 @@
+{
+    "name": "dependabot-test",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+      "setup": "npm install && cd hosting && npm install && cd ../functions && npm install",
+      "start": "export NODE_OPTIONS=--openssl-legacy-provider && concurrently -kill-others-on-fail \"cd hosting && npm run watch\" \"cd functions && npm run watch\" \"cd hosting && npm run start\" ",
+      "develop-start": "concurrently -kill-others-on-fail \"cd hosting; npm run develop-start\" \"cd functions; firebase emulators:start --only functions\"",
+      "deploy": "set NODE_OPTIONS=--openssl-legacy-provider && cd hosting && npm run build && cd .. && firebase deploy",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "all-install": "npm install && cd hosting && npm install && cd ../functions && npm install",
+      "pro-build": "cd hosting && npm run build && cd ../",
+      "chita-build": "cd hosting && npm run build:chita && cd ../",
+      "function-fmt": "cd functions && npm run fmt",
+      "hosting-fmt": "cd hosting && npm run fmt",
+      "project-fmt": "npm run function-fmt && npm run hosting-fmt",
+      "build": "cd hosting && npm run build && cd ../functions && npm run build && cd .."
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "dependencies": {
+      "firebase-tools": "^11.30.0"
+    },
+    "devDependencies": {
+      "concurrently": "^6.2.0",
+      "husky": "^2.2.0"
+    },
+    "husky": {
+      "hooks": {
+        "pre-commit": "npm run project-fmt && cd functions; npm run lint"
+      }
+    }
+  }
+  
